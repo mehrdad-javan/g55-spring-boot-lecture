@@ -5,6 +5,9 @@ import lombok.*;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +44,13 @@ public class Student {
     @JoinColumn(name = "address_id", unique = true)
     private Address address;
 
+    @ManyToMany
+    @JoinTable(
+            name = "students_courses",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+    private Set<Course> courses = new HashSet<>();
 
     @PrePersist
     public void onCreate() {
@@ -55,5 +65,13 @@ public class Student {
         this.email = email;
     }
 
+    // add helper methods to manipulate the courses set
+    public void addCourse(Course course) {
+        courses.add(course);
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+    }
 
 }
