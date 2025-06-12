@@ -1,5 +1,6 @@
 package se.lexicon.g55springbootlecture.repository;
 
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +36,8 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
     List<Student> getStudentDataByFirstName(@Param("firstName") String firstName);
 
 
+    // save method is used to insert a new student or update an existing one
+    @Modifying // tells Spring Data JPA that this query will modify the database, and it is not a select query
+    @Query("update Student s set s.status = :status where s.id= :id")
+    int updateStudentStatusById(@Param("id") String id, @Param("status") boolean status);
 }
