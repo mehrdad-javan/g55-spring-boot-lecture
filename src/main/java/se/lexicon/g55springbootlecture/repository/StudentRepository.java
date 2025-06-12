@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import se.lexicon.g55springbootlecture.entity.Student;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends CrudRepository<Student, Integer> {
@@ -40,4 +41,8 @@ public interface StudentRepository extends CrudRepository<Student, Integer> {
     @Modifying // tells Spring Data JPA that this query will modify the database, and it is not a select query
     @Query("update Student s set s.status = :status where s.id= :id")
     int updateStudentStatusById(@Param("id") String id, @Param("status") boolean status);
+
+    Optional<Student> findByEmail(String email);
+
+    List<Student> findByFirstName(String firstName);
 }
