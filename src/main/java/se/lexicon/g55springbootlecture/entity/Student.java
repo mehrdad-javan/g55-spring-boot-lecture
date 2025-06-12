@@ -2,6 +2,7 @@ package se.lexicon.g55springbootlecture.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +19,10 @@ import java.time.LocalDateTime;
 //@Table(name = "students")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @UuidGenerator // Generates a UUID for the ID field
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@Setter(AccessLevel.NONE) // Prevents setting the ID manually
+    private String id;
     @Column(nullable = false, length = 100)
     private String firstName;
     @Column(nullable = false, length = 100)
@@ -29,6 +32,14 @@ public class Student {
 
     private boolean status;
     private LocalDateTime createDate;
+
+    // Cascade: is a feature in JPA that allows you to propagate operations performed on one entity to its related entities.
+    // fetch: defines how the related entity is fetched from the database.
+    // FetchType.EAGER: means that the related entity (Address) is fetched immediately when the Student is fetched.
+    // FetchType.LAZY: means that the related entity is fetched only when it is accessed for the first time.
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @JoinColumn(name = "address_id", unique = true)
+    private Address address;
 
 
     @PrePersist

@@ -1,9 +1,13 @@
 package se.lexicon.g55springbootlecture.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.*;
+
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 
 @Entity
 public class Address {
@@ -15,8 +19,9 @@ public class Address {
     private String city;
     private String postalCode;
 
-    public Address() {
-    }
+    @OneToOne(mappedBy = "address")
+    private Student student;
+
 
     public Address(String street, String city, String postalCode) {
         this.street = street;
@@ -24,36 +29,5 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
 }
